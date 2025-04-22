@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>اختيار السور</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      background: #121212;
+      color: #ffffff;
+      font-family: sans-serif;
+      padding: 20px;
+      direction: rtl;
+    }
+    h2 {
+      text-align: center;
+    }
+    .surah-list {
+      max-height: 70vh;
+      overflow-y: auto;
+      margin-bottom: 20px;
+      border: 1px solid #444;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    label {
+      display: block;
+      margin: 5px 0;
+      font-size: 18px;
+    }
+    button {
+      background: #28e;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h2>اختر السور</h2>
+  <form id="surahForm">
+    <div class="surah-list" id="surahList">
+      <!-- Список сур будет сгенерирован скриптом -->
+    </div>
+    <button type="submit">إرسال</button>
+  </form>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    const surahNames = [
+      "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال",
+      "التوبة", "يونس", "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف",
+      "مريم", "طه", "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل",
+      "القصص", "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب", "سبإ", "فاطر", "يس", "الصافات",
+      "ص", "الزمر", "غافر", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف",
+      "محمد", "الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن",
+      "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون",
+      "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن",
+      "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس",
+      "التكوير", "الإنفطار", "المطففين", "الإنشقاق", "البروج", "الطارق", "الأعلى", "الغاشية",
+      "الفجر", "البلد", "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر",
+      "البينة", "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل",
+      "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"
+    ];
+
+    const list = document.getElementById("surahList");
+
+    // Генерация чекбоксов
+    surahNames.forEach((name, index) => {
+      const id = index + 1;
+      const label = document.createElement("label");
+      label.innerHTML = `<input type="checkbox" name="surah" value="${id}"> ${id}. ${name}`;
+      list.appendChild(label);
+    });
+
+    document.getElementById("surahForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const selected = [...document.querySelectorAll('input[name=surah]:checked')].map(cb => parseInt(cb.value));
+      tg.sendData(JSON.stringify(selected));  // Отправка выбранных сур боту
+      tg.close();
+    });
+  </script>
+</body>
+</html>

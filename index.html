@@ -75,7 +75,7 @@
     surahNames.forEach((name, index) => {
       const id = index + 1;
       const label = document.createElement("label");
-      label.innerHTML = `<input type="checkbox" name="surah" value="${id}"> ${id}. ${name}`;
+      label.innerHTML = <input type="checkbox" name="surah" value="${id}"> ${id}. ${name};
       list.appendChild(label);
     });
 
